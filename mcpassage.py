@@ -26,19 +26,21 @@ nLevel = 2 * (maxLevel / resolution) + 1
 # Value:    First passage time for a given trajectory (column) and a given level (row)
 #           Nan means the level was never passed
 raw = pd.DataFrame()
-raw = raw.reindex(columns = range(nSample))
+#raw = raw.reindex(columns = range(nSample))
+raw = raw.reindex(columns = range(simLength))
 raw['levels'] = np.linspace(minLevel, maxLevel, nLevel)  
+raw = raw.fillna(0)
 #raw = raw.set_index('levels')
 #print(raw)
 
 # Generating trajectories
 for sample in range(nSample):
   x = 0.0
-  trajectory = np.empty(simLength)
+  #trajectory = np.empty(simLength)
   for actTime in range(simLength):
     x = x + np.random.normal(mu, sigma * np.sqrt(dt))
 
-    trajectory[actTime] = x
+    #trajectory[actTime] = x
 
     if(x >= 0):
       # Index of largest level smaller than act value (level just passed from below)
@@ -47,13 +49,14 @@ for sample in range(nSample):
       # Index of smalles level larger than act value (level just passed from ebove)
       levelIndex = raw[raw['levels'] >= x].index[0]
 
-    passageTime = raw.at[levelIndex, sample]
-    #print(x, sample, levelIndex, passageTime)
-    if(np.isnan(passageTime)):
-      raw.at[levelIndex, sample] = actTime
+    #passageTime = raw.at[levelIndex, sample]
+    ##print(x, sample, levelIndex, passageTime)
+    #if(np.isnan(passageTime)):
+    #  raw.at[levelIndex, sample] = actTime
+    raw.at[levelIndex, actTime] = raw.at[levelIndex, actTime] + 1
 
-  for idx, val in enumerate(trajectory):
-    print(idx, val)
+ # for idx, val in enumerate(trajectory):
+ #   print(idx, val)
 
 
 print(raw)
