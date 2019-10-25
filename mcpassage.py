@@ -2,6 +2,69 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Seed
+# np.random.seed(42)
+
+# Print all rows from a dataframe
+# pd.set_option('display.max_rows', None)
+
+# First occurence
+def fpass(trh, arr):
+  for idx in range(len(arr) - 1):
+      if trh >= 0:
+        if arr[idx] < trh and trh < arr[idx+1]:
+          return idx + 1
+      if trh < 0: 
+        if arr[idx] > trh and trh > arr[idx+1]:
+          return idx + 1
+ 
+
+# Distribution details
+mu = 0.0
+sigma = 0.1
+
+# Simulation params
+simLength = 10
+
+# The level to reach
+actLevel = 0.1
+
+# Generating a path
+trajectory = np.empty(simLength)
+trajectory[0] = 0.0
+for i in range(simLength - 1):
+  trajectory [i + 1] = trajectory[i] + np.random.normal(mu, sigma)
+
+for idx, val in enumerate(trajectory):
+  print(idx, val)
+
+# plt.plot(trajectory)
+# plt.show()
+
+print("--------------------------------")
+
+print(actLevel, fpass(actLevel, trajectory))
+
+
+
+exit(0)
+
+maxIndex = 20 # TODO: pick the middle val by expression
+minIndex = 20
+x = 0.0
+for i in range(20):
+  x = x + np.random.normal(0, 0.5)
+
+  if(x >= 0):
+    # Index of largest level smaller than act value (level just passed from below)
+    indices = np.where(levels < x)
+ 
+
+
+
+
+
+
 # Print all rows from a dataframe
 pd.set_option('display.max_rows', None)
 
@@ -15,10 +78,51 @@ simLength = 100
 nSample = 1
 
 # Levels to reach
-resolution = 1
-maxLevel = 10
+resolution = 0.1
+maxLevel = 2
 minLevel = -maxLevel
 nLevel = 2 * (maxLevel / resolution) + 1
+
+
+
+levels = np.linspace(minLevel, maxLevel, nLevel)  
+for idx, val in enumerate(levels):
+  print(idx, val)
+
+
+maxIndex = 20 # TODO: pick the middle val by expression
+minIndex = 20
+x = 0.0
+for i in range(20):
+  x = x + np.random.normal(0, 0.5)
+
+  if(x >= 0):
+    # Index of largest level smaller than act value (level just passed from below)
+    indices = np.where(levels < x)
+    index = indices[0][-1]
+    print(x, indices[0][-1])
+    if index > maxIndex:
+        print("new max")
+        maxIndex = index
+
+  else:
+    # Index of smalles level larger than act value (level just passed from ebove)
+    indices = np.where(levels > x)
+    index = indices[0][0]
+    print(x, indices[0][0])
+    if index < minIndex:
+      print("new min")
+      minIndex = index
+ 
+  
+
+
+exit(0)
+
+
+
+
+
 
 # DataFrame for the raw simulation data
 # Columns:  One column for each simulated trajectory (sample)
