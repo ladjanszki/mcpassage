@@ -56,6 +56,11 @@ def trajectoryGenerator(nTrajectory, T):
 
     print(str(nTrajectory) + " trajectories generated in " + str(genEnd - genStart) + " seconds.")
 
+    # Check trajectories by sight
+    # plt.plot(np.transpose(allTrajectory))
+    # plt.show()
+ 
+
     return allTrajectory
  
 
@@ -73,26 +78,11 @@ nTrajectory = 10000
 # The level to reach
 actLevel = 0.5
 
-## Generating the trajectories
-##genStart = time.time()
-##allTrajectory = np.full((nTrajectory, T), np.nan)
-##
-##for actTrajectory in range(nTrajectory):
-##
-##  allTrajectory[actTrajectory, 0] = 0.0
-##  for i in range(T - 1):
-##    allTrajectory[actTrajectory, i + 1] = allTrajectory[actTrajectory, i] + np.random.normal(m, s)
-##
-##genEnd = time.time()
-#
 
 allTrajectory = trajectoryGenerator(nTrajectory, T)
 
 
 
-# Check trajectories by sight
-# plt.plot(np.transpose(allTrajectory))
-# plt.show()
 
 
 
@@ -111,17 +101,6 @@ for actTrajectory in range(nTrajectory):
   #  print("Never reached")
 
 print("Fraction passed: ", numOfPassed/nTrajectory)
-
-
-#print("#####")
-#print(results)
-#print("#####")
-
-
-# Printing out the histogram values
-#hist, bins = np.histogram(results[~np.isnan(results)], bins=range(T), density=True)
-#print(hist) 
-#print(bins)
 
 
 # Plot the histogram
