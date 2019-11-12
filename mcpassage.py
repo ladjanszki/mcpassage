@@ -7,43 +7,6 @@ import utils
 # Seed
 #np.random.seed(42)
 
-def fptd(X, D, t):
-    '''First passage time distribution
-
-    The analytic curve as a benchmark for the numerical distribution
-
-    '''
-    tmp1 = X / np.sqrt(4 * np.pi * D * t**3)
-    tmp2 = np.exp(- (X**2 / (4 * D * t))) 
-    return tmp1 * tmp2
-
-def trajectoryGenerator(nTrajectory, T):
-    ''' Function that generates trajectories
-
-    nTrajectories: number
-    T: length
-
-    '''
-     
-    genStart = time.time()
-    allTrajectory = np.full((nTrajectory, T), np.nan)
-    
-    for actTrajectory in range(nTrajectory):
-        allTrajectory[actTrajectory, 0] = 0.0
-        for i in range(T - 1):
-            allTrajectory[actTrajectory, i + 1] = allTrajectory[actTrajectory, i] + np.random.normal(m, s)
-    
-    genEnd = time.time()
-
-    print(str(nTrajectory) + " trajectories generated in " + str(genEnd - genStart) + " seconds.")
-
-    # Check trajectories by sight
-    # plt.plot(np.transpose(allTrajectory))
-    # plt.show()
- 
-
-    return allTrajectory
- 
 
 # Distribution and Brownian motion parameteres details
 x0 = 0.0
@@ -56,40 +19,35 @@ T = 100 #End time of simulation
 # We assume dt = 1
 nTrajectory = 10000
 
+
+
+# Generating and savin all trajectories
+print("Generating trajectories...")
+allTrajectory = utils.trajectoryGenerator(nTrajectory, T, m, s)
+
+
+
+
+
+
 # The level to reach
-actLevel = 0.5
+levels = np.linspace(0.5, 0.6, 2)
 
-
-allTrajectory = trajectoryGenerator(nTrajectory, T)
-
-
-
-
-
-
-
-results = np.full(nTrajectory, fill_value=np.nan)
-numOfPassed = 0
-for actTrajectory in range(nTrajectory):
-
-
-  passLevel = utils.firstPassageTime(actLevel, allTrajectory[actTrajectory,:])
-  #print("passLevel ",passLevel)
-  if passLevel is not None:
-    results[actTrajectory] = passLevel
-    numOfPassed = numOfPassed + 1
-  #else:
-  #  print("Never reached")
-
-print("Fraction passed: ", numOfPassed/nTrajectory)
+allLevelResults = np.zeros((nTrajectory, T))
+for idx, actLevel in enumerate(levels):
+    #results = oneLevelStats(allTrajetory)
+    allLevelResults[:, idx] = utils.oneLevelStats(allTrajectory, actLevel)
+    
+    
 
 
 # Plot the histogram
+results = allLevelResults[:, 0]
 plt.hist(results[~np.isnan(results)], bins=range(T), density=True)
 
 # Plot analitical passage density as end of simulation
 tPoints = np.linspace(1, T, 100) 
-p = fptd(actLevel, D, tPoints)
+p = utils.analyticSolution(actLevel, D, tPoints)
 plt.plot(tPoints, p)
  
 
