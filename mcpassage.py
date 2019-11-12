@@ -2,29 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+import utils
+
 # Seed
 #np.random.seed(42)
-
-
-def fpass(trh, arr):
-    ''' Function to extract the forst passage information from one trajectory
-
-    Input
-    trh: the level which we detect
-    arr: numpy array storing the trajectory
-
-    TODO: Think of more pythonic way to write this
-
-    '''
-        
-    for idx in range(len(arr) - 1):
-          if trh >= 0:
-              if arr[idx] < trh and trh < arr[idx+1]:
-                  return idx + 1
-          if trh < 0: 
-              if arr[idx] > trh and trh > arr[idx+1]:
-                return idx + 1
-
 
 def fptd(X, D, t):
     '''First passage time distribution
@@ -92,7 +73,7 @@ numOfPassed = 0
 for actTrajectory in range(nTrajectory):
 
 
-  passLevel = fpass(actLevel, allTrajectory[actTrajectory,:])
+  passLevel = utils.firstPassageTime(actLevel, allTrajectory[actTrajectory,:])
   #print("passLevel ",passLevel)
   if passLevel is not None:
     results[actTrajectory] = passLevel
