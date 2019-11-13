@@ -68,17 +68,17 @@ def oneLevelStats(allTrajectory, actLevel):
     nTrajectory = allTrajectory.shape[0]
     results = np.full(nTrajectory, fill_value=np.nan)
 
-    #numOfPassed = 0
+    numOfPassed = 0
 
     for actTrajectory in range(nTrajectory):
         passLevel = firstPassageTime(actLevel, allTrajectory[actTrajectory,:])
         if passLevel is not None:
             results[actTrajectory] = passLevel
-            #numOfPassed = numOfPassed + 1
+            numOfPassed = numOfPassed + 1
         #else:
         #    print("Never reached")
     
-    #print("Fraction passed: ", numOfPassed/nTrajectory)
+    passFraction = numOfPassed/nTrajectory)
 
     return results
  
