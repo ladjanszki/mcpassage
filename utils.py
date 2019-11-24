@@ -78,7 +78,7 @@ def oneLevelStats(allTrajectory, actLevel):
         #else:
         #    print("Never reached")
     
-    passFraction = numOfPassed/nTrajectory)
+    passFraction = numOfPassed/nTrajectory
 
     return results
  
